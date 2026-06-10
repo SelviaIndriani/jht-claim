@@ -1,0 +1,18 @@
+# Normalize line endings
+* text=auto eol=lf
+
+# Tell GitHub Linguist to ignore lock files and generated files
+# so language detection reflects the actual source code
+composer.lock linguist-generated=true
+package-lock.json linguist-generated=true
+*.lock linguist-generated=true
+
+# Vendor and build output — not source code
+backend/vendor/** linguist-vendored=true
+frontend/.nuxt/** linguist-generated=true
+frontend/.output/** linguist-generated=true
+frontend/node_modules/** linguist-vendored=true
+adapter/node_modules/** linguist-vendored=true
+
+# Treat blade templates as HTML for diffs
+*.blade.php diff=html
