@@ -1,0 +1,21 @@
+# Nuxt build outputs
+.nuxt/
+.output/
+dist/
+
+# Dependencies
+node_modules/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Vite cache
+.vite/
