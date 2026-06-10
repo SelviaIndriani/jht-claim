@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Layanan;
-use App\Models\PesertaBpjs;
+use App\Services\PesertaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PesertaController extends Controller
 {
+    public function __construct(private readonly PesertaService $pesertaService) {}
+
     /**
-     * Verifikasi kombinasi no_bpjs + nik.
-     * Mengembalikan daftar layanan yang berhak diterima peserta jika kombinasi valid.
+     * Verify the no_bpjs + nik combination.
+     * Returns member data and eligible services if the combination is valid.
      */
     public function verifikasi(Request $request): JsonResponse
     {
@@ -26,38 +27,19 @@ class PesertaController extends Controller
             'nik.regex'        => 'NIK harus tepat 16 digit.',
         ]);
 
-        $member = PesertaBpjs::where('no_bpjs', $request->no_bpjs)
-            ->where('nik', $request->nik)
-            ->where('is_active', true)
-            ->first();
+        $result = $this->pesertaService->verifikasi($request->no_bpjs, $request->nik);
 
-        if (!$member) {
+        if (!$result) {
             return response()->json([
                 'success' => false,
-                'message' => 'Kombinasi Nomor KPJ dan NIK tidak ditemukan dalam sistem. Pastikan data yang Anda masukkan sudah benar.',
+                'message' => 'Kombinasi Nomor KPJ dan NIK tidak ditemukan. Pastikan data yang Anda masukkan sudah benar.',
             ], 404);
         }
-
-        // Ambil layanan yang berhak diterima peserta berdasarkan layanan_ids
-        $layanan = Layanan::whereIn('id', $member->layanan_ids ?? [])
-            ->where('is_active', true)
-            ->get(['id', 'kode', 'nama', 'deskripsi']);
 
         return response()->json([
             'success' => true,
             'message' => 'Data kepesertaan ditemukan.',
-            'data'    => [
-                'peserta' => [
-                    'no_bpjs'          => $member->no_bpjs,
-                    'nik'              => $member->nik,
-                    'nama_lengkap'     => $member->nama_lengkap,
-                    'nama_ibu_kandung' => $member->nama_ibu_kandung,
-                    'tempat_lahir'     => $member->tempat_lahir,
-                    'tanggal_lahir'    => $member->tanggal_lahir->format('Y-m-d'),
-                    'email'            => $member->email,
-                ],
-                'layanan' => $layanan,
-            ],
+            'data'    => $result,
         ]);
     }
 }
