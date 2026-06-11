@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 class ReferensiController extends Controller
 {
     /**
-     * Return a list of active branch offices, grouped by province.
+     * Return a list of active branch offices, ordered by province then name.
      */
     public function kantorCabang(): JsonResponse
     {
