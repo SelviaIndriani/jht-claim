@@ -8,10 +8,10 @@ use App\Models\PesertaBpjs;
 class PesertaService
 {
     /**
-     * Verify the no_bpjs + nik combination.
+     * Verify the no_bpjs + nik + email combination.
      * Returns ['peserta' => ..., 'layanan' => ...] if valid, or null if not found.
      */
-    public function verifikasi(string $noBpjs, string $nik): ?array
+    public function verifikasi(string $noBpjs, string $nik, string $email): ?array
     {
         $member = PesertaBpjs::where('no_bpjs', $noBpjs)
             ->where('nik', $nik)
@@ -19,6 +19,11 @@ class PesertaService
             ->first();
 
         if (!$member) {
+            return null;
+        }
+
+        // Cross-validate email matches database
+        if (strtolower(trim($email)) !== strtolower(trim($member->email ?? ''))) {
             return null;
         }
 

@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('klaim_jht', function (Blueprint $table) {
+            $table->id();
             $table->string('no_klaim', 20)->unique()->nullable()->index();
             $table->string('no_bpjs', 20)->nullable()->index();
             $table->string('nik', 16)->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('pas_foto')->nullable();
             $table->enum('status', ['pending', 'diproses', 'disetujui', 'ditolak'])->default('pending');
             $table->unsignedBigInteger('kantor_cabang_id')->nullable()->index();
+            $table->timestamps();
             $table->timestamp('submitted_at')->nullable();
             $table->softDeletes()->index();
         });
