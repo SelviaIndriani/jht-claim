@@ -3,41 +3,41 @@
 
     <!-- Header -->
     <header class="bg-blue-600 shadow-md">
-      <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
-        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+      <div class="flex items-center max-w-4xl gap-3 px-4 py-4 mx-auto">
+        <div class="flex items-center justify-center w-10 h-10 bg-white rounded-lg shadow-sm">
           <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
         </div>
         <div>
-          <h1 class="text-white font-bold text-lg leading-tight">BPJS Ketenagakerjaan</h1>
-          <p class="text-blue-100 text-xs">Layanan Klaim Online</p>
+          <h1 class="text-lg font-bold leading-tight text-white">BPJS Ketenagakerjaan</h1>
+          <p class="text-xs text-blue-100">Layanan Klaim Online</p>
         </div>
       </div>
     </header>
 
-    <main class="max-w-3xl mx-auto px-4 py-8">
+    <main class="max-w-3xl px-4 py-8 mx-auto">
 
       <!-- ══ SUCCESS STATE ══ -->
-      <div v-if="submitSuccess" class="bg-white rounded-xl shadow p-12 text-center">
-        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div v-if="submitSuccess" class="p-12 text-center bg-white shadow rounded-xl">
+        <div class="flex items-center justify-center w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full">
           <svg class="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Pengajuan Berhasil!</h2>
-        <p class="text-gray-500 mb-6 max-w-md mx-auto">
+        <h2 class="mb-2 text-2xl font-bold text-gray-800">Pengajuan Berhasil!</h2>
+        <p class="max-w-md mx-auto mb-6 text-gray-500">
           Klaim JHT Anda telah berhasil diajukan. Email konfirmasi telah dikirimkan ke
           <strong>{{ form.email }}</strong>.
         </p>
-        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-xs mx-auto mb-6">
-          <p class="text-xs text-gray-500 mb-1">Nomor Klaim</p>
+        <div class="max-w-xs p-4 mx-auto mb-6 border border-blue-200 bg-blue-50 rounded-xl">
+          <p class="mb-1 text-xs text-gray-500">Nomor Klaim</p>
           <p class="text-xl font-bold text-blue-700">{{ submitResult?.no_klaim }}</p>
-          <p class="text-xs text-gray-400 mt-1">Simpan nomor ini untuk memantau status klaim Anda</p>
+          <p class="mt-1 text-xs text-gray-400">Simpan nomor ini untuk memantau status klaim Anda</p>
         </div>
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-md mx-auto text-left mb-8">
-          <p class="text-sm font-semibold text-yellow-800 mb-1">📋 Informasi Penting</p>
-          <ul class="text-xs text-yellow-700 space-y-1 list-disc list-inside">
+        <div class="max-w-md p-4 mx-auto mb-8 text-left border border-yellow-200 rounded-lg bg-yellow-50">
+          <p class="mb-1 text-sm font-semibold text-yellow-800">📋 Informasi Penting</p>
+          <ul class="space-y-1 text-xs text-yellow-700 list-disc list-inside">
             <li>Proses verifikasi membutuhkan 3–7 hari kerja</li>
             <li>Petugas akan menghubungi Anda sesuai cara konfirmasi yang dipilih</li>
             <li>Siapkan dokumen asli saat verifikasi</li>
@@ -52,18 +52,18 @@
       </div>
 
       <!-- ══ FORM ══ -->
-      <div v-else class="bg-white rounded-xl shadow">
+      <div v-else class="bg-white shadow rounded-xl">
 
         <!-- Title bar -->
         <div class="px-6 pt-6 pb-4 border-b border-gray-100">
           <h2 class="text-xl font-bold text-gray-800">Klaim JHT (Mengundurkan Diri / Habis Masa Kontrak)</h2>
-          <p class="text-sm text-gray-500 mt-1">Harap isi data diri anda. Yakinkan data benar dan valid.</p>
+          <p class="mt-1 text-sm text-gray-500">Harap isi data diri anda. Yakinkan data benar dan valid.</p>
         </div>
 
         <div class="px-6 py-6 space-y-5">
 
           <!-- Global error -->
-          <div v-if="submitError" class="flex items-start gap-3 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm">
+          <div v-if="submitError" class="flex items-start gap-3 p-4 text-sm text-red-800 border border-red-200 rounded-lg bg-red-50">
             <svg class="w-4 h-4 mt-0.5 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
             </svg>
@@ -72,14 +72,14 @@
 
           <!-- ── 1. Penyebab Klaim (fixed) ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Penyebab Klaim <span class="text-red-500">*</span>
             </label>
             <div class="relative">
               <select class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-gray-50 text-gray-700 appearance-none cursor-not-allowed" disabled>
                 <option>BERHENTI BEKERJA</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <div class="absolute inset-y-0 flex items-center pointer-events-none right-3">
                 <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
@@ -89,7 +89,7 @@
 
           <!-- ── 2. Hubungan dengan Pekerja ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Hubungan dengan Pekerja <span class="text-red-500">*</span>
             </label>
             <div class="relative">
@@ -101,13 +101,13 @@
                 <option value="">-- Pilih --</option>
                 <option value="tenaga_kerja">TENAGA KERJA</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <div class="absolute inset-y-0 flex items-center pointer-events-none right-3">
                 <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
-            <p v-if="errors.jenis_kepesertaan" class="text-xs text-red-500 mt-1">{{ errors.jenis_kepesertaan }}</p>
+            <p v-if="errors.jenis_kepesertaan" class="mt-1 text-xs text-red-500">{{ errors.jenis_kepesertaan }}</p>
           </div>
 
           <!-- ── 3. Upload E-KTP & Pas Foto ── -->
@@ -115,7 +115,7 @@
             <!-- E-KTP -->
             <div>
               <div
-                class="border border-dashed rounded-lg h-44 flex flex-col items-center justify-center cursor-pointer transition bg-gray-50"
+                class="flex flex-col items-center justify-center transition border border-dashed rounded-lg cursor-pointer h-44 bg-gray-50"
                 :class="idCardPreview ? 'border-blue-400' : errors.foto_ktp ? 'border-red-400' : 'border-gray-300 hover:border-blue-400'"
                 @click="$refs.idCardInput.click()"
                 @dragover.prevent
@@ -123,10 +123,10 @@
               >
                 <input ref="idCardInput" type="file" accept="image/jpeg,image/jpg,image/png" class="hidden" @change="onIdCardSelect" />
                 <div v-if="idCardPreview" class="relative w-full h-full">
-                  <img :src="idCardPreview" alt="E-KTP" class="w-full h-full object-contain rounded-lg p-1" />
+                  <img :src="idCardPreview" alt="E-KTP" class="object-contain w-full h-full p-1 rounded-lg" />
                   <button
                     type="button"
-                    class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow text-xs"
+                    class="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full shadow top-1 right-1 hover:bg-red-600"
                     @click.stop="removeIdCard"
                   >✕</button>
                 </div>
@@ -140,18 +140,18 @@
               </div>
               <button
                 type="button"
-                class="w-full mt-2 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition"
+                class="w-full py-2 mt-2 text-sm font-medium text-white transition bg-blue-500 rounded-lg hover:bg-blue-600"
                 @click="$refs.idCardInput.click()"
               >
                 Foto E-KTP
               </button>
-              <p v-if="errors.foto_ktp" class="text-xs text-red-500 mt-1">{{ errors.foto_ktp }}</p>
+              <p v-if="errors.foto_ktp" class="mt-1 text-xs text-red-500">{{ errors.foto_ktp }}</p>
             </div>
 
             <!-- Pas Foto -->
             <div>
               <div
-                class="border border-dashed rounded-lg h-44 flex flex-col items-center justify-center cursor-pointer transition bg-gray-50"
+                class="flex flex-col items-center justify-center transition border border-dashed rounded-lg cursor-pointer h-44 bg-gray-50"
                 :class="portraitPreview ? 'border-blue-400' : errors.pas_foto ? 'border-red-400' : 'border-gray-300 hover:border-blue-400'"
                 @click="$refs.portraitInput.click()"
                 @dragover.prevent
@@ -159,10 +159,10 @@
               >
                 <input ref="portraitInput" type="file" accept="image/jpeg,image/jpg,image/png" class="hidden" @change="onPortraitSelect" />
                 <div v-if="portraitPreview" class="relative w-full h-full">
-                  <img :src="portraitPreview" alt="Pas Foto" class="w-full h-full object-contain rounded-lg p-1" />
+                  <img :src="portraitPreview" alt="Pas Foto" class="object-contain w-full h-full p-1 rounded-lg" />
                   <button
                     type="button"
-                    class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow text-xs"
+                    class="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full shadow top-1 right-1 hover:bg-red-600"
                     @click.stop="removePortrait"
                   >✕</button>
                 </div>
@@ -176,18 +176,18 @@
               </div>
               <button
                 type="button"
-                class="w-full mt-2 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition"
+                class="w-full py-2 mt-2 text-sm font-medium text-white transition bg-blue-500 rounded-lg hover:bg-blue-600"
                 @click="$refs.portraitInput.click()"
               >
                 Ambil Foto Diri
               </button>
-              <p v-if="errors.pas_foto" class="text-xs text-red-500 mt-1">{{ errors.pas_foto }}</p>
+              <p v-if="errors.pas_foto" class="mt-1 text-xs text-red-500">{{ errors.pas_foto }}</p>
             </div>
           </div>
 
           <!-- ── 4. NIK Pekerja ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Nomor Induk Kependudukan (NIK) Pekerja <span class="text-red-500">*</span>
             </label>
             <input
@@ -199,12 +199,12 @@
               :class="errors.nik ? 'border-red-400' : 'border-gray-300'"
               @input="onNikInput"
             />
-            <p v-if="errors.nik" class="text-xs text-red-500 mt-1">{{ errors.nik }}</p>
+            <p v-if="errors.nik" class="mt-1 text-xs text-red-500">{{ errors.nik }}</p>
           </div>
 
           <!-- ── 5. Nama Lengkap ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Nama Lengkap Pekerja (Sesuai KTP) <span class="text-red-500">*</span>
             </label>
             <input
@@ -214,13 +214,13 @@
               class="w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               :class="errors.nama_lengkap ? 'border-red-400' : 'border-gray-300'"
             />
-            <p v-if="errors.nama_lengkap" class="text-xs text-red-500 mt-1">{{ errors.nama_lengkap }}</p>
+            <p v-if="errors.nama_lengkap" class="mt-1 text-xs text-red-500">{{ errors.nama_lengkap }}</p>
           </div>
 
           <!-- ── 6. Tempat Lahir & Tanggal Lahir ── -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
+              <label class="block mb-1 text-sm font-medium text-gray-700">
                 Tempat lahir Pekerja <span class="text-red-500">*</span>
               </label>
               <input
@@ -230,10 +230,10 @@
                 class="w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 :class="errors.tempat_lahir ? 'border-red-400' : 'border-gray-300'"
               />
-              <p v-if="errors.tempat_lahir" class="text-xs text-red-500 mt-1">{{ errors.tempat_lahir }}</p>
+              <p v-if="errors.tempat_lahir" class="mt-1 text-xs text-red-500">{{ errors.tempat_lahir }}</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
+              <label class="block mb-1 text-sm font-medium text-gray-700">
                 Tanggal Lahir Pekerja <span class="text-red-500">*</span>
               </label>
               <input
@@ -243,13 +243,13 @@
                 class="w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 :class="errors.tanggal_lahir ? 'border-red-400' : 'border-gray-300'"
               />
-              <p v-if="errors.tanggal_lahir" class="text-xs text-red-500 mt-1">{{ errors.tanggal_lahir }}</p>
+              <p v-if="errors.tanggal_lahir" class="mt-1 text-xs text-red-500">{{ errors.tanggal_lahir }}</p>
             </div>
           </div>
 
           <!-- ── 7. Nama Ibu Kandung ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Nama Ibu Kandung Pekerja <span class="text-red-500">*</span>
             </label>
             <input
@@ -259,12 +259,12 @@
               class="w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               :class="errors.nama_ibu_kandung ? 'border-red-400' : 'border-gray-300'"
             />
-            <p v-if="errors.nama_ibu_kandung" class="text-xs text-red-500 mt-1">{{ errors.nama_ibu_kandung }}</p>
+            <p v-if="errors.nama_ibu_kandung" class="mt-1 text-xs text-red-500">{{ errors.nama_ibu_kandung }}</p>
           </div>
 
           <!-- ── 8. Alamat Email ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Alamat Email Pribadi Aktif <span class="text-red-500">*</span>
             </label>
             <input
@@ -275,12 +275,12 @@
               :class="errors.email ? 'border-red-400' : 'border-gray-300'"
               @blur="validateEmailField"
             />
-            <p v-if="errors.email" class="text-xs text-red-500 mt-1">{{ errors.email }}</p>
+            <p v-if="errors.email" class="mt-1 text-xs text-red-500">{{ errors.email }}</p>
           </div>
 
           <!-- ── 9. Nomor BPJS (KPJ) ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Nomor Peserta BPJS Ketenagakerjaan (KPJ) <span class="text-red-500">*</span>
             </label>
             <input
@@ -292,17 +292,17 @@
               :class="errors.no_bpjs ? 'border-red-400' : 'border-gray-300'"
               @input="onNoBpjsInput"
             />
-            <p v-if="errors.no_bpjs" class="text-xs text-red-500 mt-1">{{ errors.no_bpjs }}</p>
+            <p v-if="errors.no_bpjs" class="mt-1 text-xs text-red-500">{{ errors.no_bpjs }}</p>
           </div>
 
           <!-- Verification trigger (hidden, fires when both NIK + KPJ filled) -->
-          <div v-if="verificationError" class="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <div v-if="verificationError" class="flex items-center gap-2 p-3 text-sm text-red-700 border border-red-200 rounded-lg bg-red-50">
             <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
             </svg>
             {{ verificationError }}
           </div>
-          <div v-if="verificationSuccess" class="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
+          <div v-if="verificationSuccess" class="flex items-center gap-2 p-3 text-sm text-green-700 border border-green-200 rounded-lg bg-green-50">
             <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
@@ -311,7 +311,7 @@
 
           <!-- ── 10. Sebab Klaim ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Sebab Klaim <span class="text-red-500">*</span>
             </label>
             <div class="relative">
@@ -324,21 +324,21 @@
                 <option value="mengundurkan_diri">Mengundurkan Diri</option>
                 <option value="berakhir_kontrak">Berakhir Kontrak</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <div class="absolute inset-y-0 flex items-center pointer-events-none right-3">
                 <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
-            <p v-if="errors.sebab_klaim" class="text-xs text-red-500 mt-1">{{ errors.sebab_klaim }}</p>
+            <p v-if="errors.sebab_klaim" class="mt-1 text-xs text-red-500">{{ errors.sebab_klaim }}</p>
           </div>
 
           <!-- ── 11. Jenis Layanan (toggles, read-only dari verifikasi) ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-3">
+            <label class="block mb-3 text-sm font-medium text-gray-700">
               Jenis layanan yang didapatkan <span class="text-red-500">*</span>
             </label>
-            <div v-if="availableServices.length === 0" class="p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-400">
+            <div v-if="availableServices.length === 0" class="p-3 text-sm text-gray-400 border border-gray-200 rounded-lg bg-gray-50">
               Layanan akan tampil setelah verifikasi data KPJ &amp; NIK berhasil.
             </div>
             <div v-else class="flex flex-wrap gap-6">
@@ -360,20 +360,20 @@
                 <span class="text-sm text-gray-600">{{ service.nama }}</span>
               </div>
             </div>
-            <p class="text-xs text-gray-400 mt-2">Jenis layanan ditentukan otomatis berdasarkan data kepesertaan Anda.</p>
-            <p v-if="errors.layanan_dipilih" class="text-xs text-red-500 mt-1">{{ errors.layanan_dipilih }}</p>
+            <p class="mt-2 text-xs text-gray-400">Jenis layanan ditentukan otomatis berdasarkan data kepesertaan Anda.</p>
+            <p v-if="errors.layanan_dipilih" class="mt-1 text-xs text-red-500">{{ errors.layanan_dipilih }}</p>
           </div>
 
           <!-- ── 12. Cara Konfirmasi ── -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-3">
+            <label class="block mb-3 text-sm font-medium text-gray-700">
               Pilih cara konfirmasi klaim: <span class="text-red-500">*</span>
             </label>
             <div class="space-y-3">
               <!-- Video Call -->
               <label class="flex items-center gap-3 cursor-pointer">
                 <div
-                  class="relative w-10 h-5 rounded-full transition-colors duration-200 cursor-pointer shrink-0"
+                  class="relative w-10 h-5 transition-colors duration-200 rounded-full cursor-pointer shrink-0"
                   :class="form.cara_konfirmasi === 'video_call' ? 'bg-blue-500' : 'bg-gray-300'"
                   @click="form.cara_konfirmasi = form.cara_konfirmasi === 'video_call' ? '' : 'video_call'"
                 >
@@ -387,7 +387,7 @@
               <!-- Datang ke Kantor -->
               <label class="flex items-center gap-3 cursor-pointer">
                 <div
-                  class="relative w-10 h-5 rounded-full transition-colors duration-200 cursor-pointer shrink-0"
+                  class="relative w-10 h-5 transition-colors duration-200 rounded-full cursor-pointer shrink-0"
                   :class="form.cara_konfirmasi === 'datang_kantor' ? 'bg-blue-500' : 'bg-gray-300'"
                   @click="form.cara_konfirmasi = form.cara_konfirmasi === 'datang_kantor' ? '' : 'datang_kantor'"
                 >
@@ -399,12 +399,12 @@
                 <span class="text-sm text-gray-700">Datang Langsung Ke Kantor Cabang Dengan Jadwal Kedatangan Paling Cepat Sesuai Ketersediaan Pada Kantor Cabang Yang Dipilih</span>
               </label>
             </div>
-            <p v-if="errors.cara_konfirmasi" class="text-xs text-red-500 mt-2">{{ errors.cara_konfirmasi }}</p>
+            <p v-if="errors.cara_konfirmasi" class="mt-2 text-xs text-red-500">{{ errors.cara_konfirmasi }}</p>
           </div>
 
           <!-- Branch office selector — shown when datang ke kantor -->
           <div v-if="form.cara_konfirmasi === 'datang_kantor'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block mb-1 text-sm font-medium text-gray-700">
               Pilih Kantor Cabang <span class="text-red-500">*</span>
             </label>
             <div class="relative">
@@ -420,14 +420,14 @@
                   </option>
                 </optgroup>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <div class="absolute inset-y-0 flex items-center pointer-events-none right-3">
                 <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
-            <p v-if="errors.kantor_cabang_id" class="text-xs text-red-500 mt-1">{{ errors.kantor_cabang_id }}</p>
-            <div v-if="selectedKantor" class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm">
+            <p v-if="errors.kantor_cabang_id" class="mt-1 text-xs text-red-500">{{ errors.kantor_cabang_id }}</p>
+            <div v-if="selectedKantor" class="p-3 mt-2 text-sm border border-blue-200 rounded-lg bg-blue-50">
               <p class="font-semibold text-blue-800">{{ selectedKantor.nama }}</p>
               <p class="text-gray-600 text-xs mt-0.5">📍 {{ selectedKantor.alamat }}, {{ selectedKantor.kota }}</p>
               <p v-if="selectedKantor.telepon" class="text-gray-600 text-xs mt-0.5">📞 {{ selectedKantor.telepon }}</p>
@@ -437,23 +437,23 @@
         </div>
 
         <!-- ── Persetujuan & Submit Footer ── -->
-        <div class="px-6 pt-4 pb-6 border-t border-gray-100 space-y-4">
+        <div class="px-6 pt-4 pb-6 space-y-4 border-t border-gray-100">
 
           <!-- Persetujuan checkbox -->
-          <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+          <div class="p-4 border border-yellow-200 bg-yellow-50 rounded-xl">
             <label class="flex items-start gap-3 cursor-pointer">
               <input
                 v-model="form.setuju"
                 type="checkbox"
                 class="mt-0.5 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 shrink-0"
               />
-              <p class="text-sm text-gray-700 leading-relaxed">
+              <p class="text-sm leading-relaxed text-gray-700">
                 Saya menyatakan bahwa semua data yang saya isi adalah <strong>benar dan dapat dipertanggungjawabkan</strong>.
                 Saya memahami bahwa pengisian data yang tidak benar dapat dikenakan sanksi sesuai
                 peraturan perundang-undangan yang berlaku.
               </p>
             </label>
-            <p v-if="errors.setuju" class="text-xs text-red-500 mt-2 pl-7 flex items-center gap-1">
+            <p v-if="errors.setuju" class="flex items-center gap-1 mt-2 text-xs text-red-500 pl-7">
               <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
               </svg>
@@ -484,7 +484,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="mt-8 py-4 text-center text-xs text-gray-400">
+    <footer class="py-4 mt-8 text-xs text-center text-gray-400">
       <p>© 2024 BPJS Ketenagakerjaan &nbsp;|&nbsp; Hotline: 175 &nbsp;|&nbsp; care@bpjsketenagakerjaan.go.id</p>
     </footer>
   </div>
@@ -648,7 +648,7 @@ async function fetchLayanan() {
 
   isVerifying.value = true
   try {
-    const res = await post('/peserta/verifikasi', { no_bpjs: form.no_bpjs, nik: form.nik })
+    const res = await post('/peserta/verifikasi', { no_bpjs: form.no_bpjs, nik: form.nik, email: form.email })
     if (res.success) {
       // Hanya ambil daftar layanan — field lain diisi manual oleh user
       availableServices.value = res.data.layanan
