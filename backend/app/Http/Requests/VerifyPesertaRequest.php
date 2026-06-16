@@ -6,13 +6,30 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * Form request validation for peserta/member verification.
+ *
+ * Validates BPJS number, NIK, and email combination for claim eligibility.
+ * Throws HTTP 422 on validation failure with structured error response.
+ */
 class VerifyPesertaRequest extends FormRequest
 {
+    /**
+     * Authorization check - all requests are permitted.
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Define validation rules for peserta verification.
+     *
+     * Rules:
+     * - no_bpjs: Required, 11-digit string (BPJS number format)
+     * - nik: Required, 16-digit string (Indonesian National ID format)
+     * - email: Required, valid RFC compliant email with DNS verification
+     */
     public function rules(): array
     {
         return [
@@ -22,6 +39,11 @@ class VerifyPesertaRequest extends FormRequest
         ];
     }
 
+    /**
+     * Define custom validation error messages.
+     *
+     * Messages are localized for Indonesian users.
+     */
     public function messages(): array
     {
         return [
@@ -34,12 +56,17 @@ class VerifyPesertaRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    /**
+     * Handle validation failure with structured JSON response.
+     *
+     * Returns HTTP 422 with validation errors in expected format.
+     */
+    protected function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(
             response()->json([
                 'success' => false,
-                'message' => 'Validasi gagal. Periksa kembali data yang Anda masukkan.',
+                'message' => $validator->errors(),
                 'errors'  => $validator->errors(),
             ], 422)
         );

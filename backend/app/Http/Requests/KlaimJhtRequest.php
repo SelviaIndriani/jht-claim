@@ -15,6 +15,9 @@ class KlaimJhtRequest extends FormRequest
 
     public function rules(): array
     {
+        $sebabKlaimValues = implode(',', array_column(\App\Enums\SebabKlaim::cases(), 'value'));
+        $caraKonfirmasiValues = implode(',', array_column(\App\Enums\CaraKonfirmasi::cases(), 'value'));
+
         return [
             'no_bpjs'          => ['required', 'string', 'regex:/^\d{11}$/'],
             'nik'              => ['required', 'string', 'regex:/^\d{16}$/', 'regex:/^[1-9]\d{15}$/'],
@@ -23,10 +26,10 @@ class KlaimJhtRequest extends FormRequest
             'tempat_lahir'     => ['required', 'string', 'min:2', 'max:50'],
             'tanggal_lahir'    => ['required', 'date', 'before:today'],
             'email'            => ['required', 'email:rfc,dns'],
-            'sebab_klaim'      => ['required', 'in:mengundurkan_diri,berakhir_kontrak'],
+            'sebab_klaim'      => ["required", "in:{$sebabKlaimValues}"],
             'layanan_dipilih'  => ['required', 'array', 'min:1'],
             'layanan_dipilih.*'=> ['integer', 'exists:layanan,id'],
-            'cara_konfirmasi'  => ['required', 'in:video_call,datang_kantor'],
+            'cara_konfirmasi'  => ["required", "in:{$caraKonfirmasiValues}"],
             'kantor_cabang_id' => ['nullable', 'required_if:cara_konfirmasi,datang_kantor', 'exists:kantor_cabang,id'],
             'foto_ktp'         => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
             'pas_foto'         => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],

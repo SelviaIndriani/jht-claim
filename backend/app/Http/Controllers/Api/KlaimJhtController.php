@@ -64,8 +64,7 @@ class KlaimJhtController extends Controller
                     'email'        => $klaim->email,
                 ],
             ], 201);
-
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses klaim. Silakan coba lagi.',
@@ -90,7 +89,18 @@ class KlaimJhtController extends Controller
 
         return response()->json([
             'success' => true,
-            'data'    => array_merge($klaim->toArray(), ['layanan' => $layanan]),
+            'data'    => [
+                'no_klaim'         => $klaim->no_klaim,
+                'no_bpjs'          => $klaim->no_bpjs,
+                'nik'              => $klaim->nik,
+                'nama_lengkap'     => $klaim->nama_lengkap,
+                'email'            => $klaim->email,
+                'sebab_klaim'      => $klaim->sebab_klaim,
+                'cara_konfirmasi'  => $klaim->cara_konfirmasi,
+                'status'           => $klaim->status,
+                'submitted_at'     => $klaim->submitted_at,
+                'layanan'          => $layanan,
+            ],
         ]);
     }
 }
