@@ -1,0 +1,28 @@
+includes:
+  - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+  paths:
+    - app
+    - routes
+    - tests
+
+  # IDE Helper Bootstrap
+  bootstrapFiles:
+    - _ide_helper.php
+    - _ide_helper_models.php
+
+  # PHPStan levels
+  level: 5
+
+  # Ignore some errors
+  ignoreErrors:
+    - identifier: "missingType.iterableValue"
+    - identifier: "missingType.parameter"
+
+  # Type checking
+  checkMissingIterableValueType: true
+  checkMissingCallableSignature: false
+
+  # Report unused variables
+  reportUnusedCatchVariables: true
