@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\KlaimJhtController;
 use App\Http\Controllers\Api\PesertaController;
 use App\Http\Controllers\Api\ReferensiController;
@@ -17,3 +18,11 @@ Route::post('/peserta/verifikasi', [PesertaController::class, 'verifikasi']);
 // JHT Claim
 Route::post('/klaim', [KlaimJhtController::class, 'store']);
 Route::get('/klaim/{claimNumber}', [KlaimJhtController::class, 'show']);
+
+// Audit logs (protected — requires authentication)
+Route::middleware('auth:sanctum')->prefix('audit-logs')->group(function () {
+    Route::get('/', [AuditLogController::class, 'index']);                              // query with filters
+    Route::get('/{auditLog}', [AuditLogController::class, 'show']);                      // single entry
+    Route::get('/model/{modelType}/{modelId}', [AuditLogController::class, 'modelHistory']); // history of model changes
+    Route::get('/summary/{modelType}/{modelId}', [AuditLogController::class, 'summary']);    // summary of changes
+});
