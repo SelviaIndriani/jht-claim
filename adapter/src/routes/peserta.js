@@ -10,22 +10,23 @@ const LARAVEL_API = process.env.LARAVEL_API_URL;
  * Body: { no_bpjs, nik }
  */
 router.post('/verifikasi', async (req, res) => {
-  const { no_bpjs, nik } = req.body;
+  const { no_bpjs, nik, email } = req.body;
 
   // Basic input presence check before forwarding to Laravel
-  if (!no_bpjs || !nik) {
+  if (!no_bpjs || !nik || !email) {
     return res.status(422).json({
       success: false,
       message: 'BPJS number and NIK are required.',
       errors: {
         no_bpjs: !no_bpjs ? ['BPJS number is required.'] : [],
         nik: !nik ? ['NIK is required.'] : [],
+        email: !email ? ['Email is required.'] : [],
       },
     });
   }
 
   try {
-    const response = await axios.post(`${LARAVEL_API}/peserta/verifikasi`, { no_bpjs, nik });
+    const response = await axios.post(`${LARAVEL_API}/peserta/verifikasi`, { no_bpjs, nik, email });
     res.json(response.data);
   } catch (error) {
     const status = error.response?.status || 500;

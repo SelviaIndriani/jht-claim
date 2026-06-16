@@ -5,6 +5,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const fileValidation = require('./middleware/fileValidation');
+const requestLogger = require('./middleware/requestLogger');
+const { metricsMiddleware, getMetrics } = require('./middleware/metrics');
 
 const referenceRoutes = require('./routes/referensi');
 const memberRoutes = require('./routes/peserta');
@@ -20,11 +23,14 @@ app.use(helmet());
 app.use(cors({
   origin: ['http://localhost:3000'],
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Accept', 'X-Request-ID'],
+  credentials: true,
 }));
 
-// Request logging
-app.use(morgan('dev'));
+// Request logging (custom + morgan) + metrics
+app.use(requestLogger);
+app.use(metricsMiddleware);
+app.use(morgan('combined'));
 
 // Body parser
 app.use(express.json());
@@ -49,11 +55,22 @@ app.use('/api', limiter);
 // Routes
 app.use('/api/referensi', referenceRoutes);
 app.use('/api/peserta', memberRoutes);
-app.use('/api/klaim', claimLimiter, claimRoutes);
+app.use('/api/klaim', claimLimiter, fileValidation, claimRoutes);
 
-// Health check endpoint
+// Health check endpoint dengan metrics
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'JHT Claim Adapter', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'ok',
+    service: 'JHT Claim Adapter',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+    uptime: process.uptime(),
+  });
+});
+
+// Metrics endpoint (untuk monitoring)
+app.get('/metrics', (req, res) => {
+  res.json(getMetrics());
 });
 
 // 404 handler
