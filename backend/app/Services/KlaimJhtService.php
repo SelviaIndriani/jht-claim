@@ -2,29 +2,33 @@
 
 namespace App\Services;
 
-use App\Mail\KlaimJhtMail;
-use App\Models\KantorCabang;
-use App\Models\KlaimJht;
 use App\Models\Layanan;
+use App\Models\KlaimJht;
+use App\Enums\KlaimStatus;
 use App\Models\PesertaBpjs;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\KantorCabang;
+use Illuminate\Http\Request;
+use App\Traits\ValidatesInput;
+use App\Utilities\LogActivity;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\KlaimRepository;
+use App\Repositories\PesertaRepository;
+use Illuminate\Support\Facades\Storage;
+use App\Jobs\SendKlaimJhtConfirmationEmail;
 
 class KlaimJhtService
 {
-    /**
-     * Find an active member by no_bpjs + nik combination.
-     * Returns the member model or null if not found.
-     */
+    use ValidatesInput;
+
+    public function __construct(
+        protected PesertaRepository $pesertaRepository,
+        protected KlaimRepository $klaimRepository,
+    ) {}
+
     public function findActiveMember(string $noBpjs, string $nik): ?PesertaBpjs
     {
-        return PesertaBpjs::where('no_bpjs', $noBpjs)
-            ->where('nik', $nik)
-            ->where('is_active', true)
-            ->first();
+        return $this->pesertaRepository->findActiveByCombination($noBpjs, $nik);
     }
 
     /**
@@ -76,6 +80,7 @@ class KlaimJhtService
      */
     public function submitKlaim(Request $request): KlaimJht
     {
+
         $fotoKtpPath = null;
         $pasFotoPath = null;
 
@@ -84,7 +89,7 @@ class KlaimJhtService
             $fotoKtpPath = $this->uploadFile($request, 'foto_ktp', 'klaim/ktp');
             $pasFotoPath = $this->uploadFile($request, 'pas_foto', 'klaim/pasfoto');
 
-            $klaim = KlaimJht::create([
+            $klaim = $this->klaimRepository->create([
                 'no_klaim'         => $this->generateNoKlaim(),
                 'no_bpjs'          => $request->no_bpjs,
                 'nik'              => $request->nik,
@@ -99,7 +104,7 @@ class KlaimJhtService
                 'kantor_cabang_id' => $request->kantor_cabang_id,
                 'foto_ktp'         => $fotoKtpPath,
                 'pas_foto'         => $pasFotoPath,
-                'status'           => 'pending',
+                'status'           => KlaimStatus::PENDING,
                 'submitted_at'     => now(),
             ]);
 
@@ -108,11 +113,22 @@ class KlaimJhtService
 
             DB::commit();
 
-            return $klaim;
+            LogActivity::info('claim_submitted', [
+                'klaim_id'  => $klaim->id,
+                'no_klaim'  => $klaim->no_klaim,
+                'no_bpjs'   => $klaim->no_bpjs,
+            ]);
 
+            return $klaim;
         } catch (\Exception $e) {
             DB::rollBack();
             $this->cleanupUploadedFiles($fotoKtpPath, $pasFotoPath);
+
+            LogActivity::error('claim_submission_failed', [
+                'error'   => $e->getMessage(),
+                'no_bpjs' => $request->no_bpjs,
+            ]);
+
             throw $e;
         }
     }
@@ -145,7 +161,7 @@ class KlaimJhtService
             ? KantorCabang::find($request->kantor_cabang_id, ['id', 'nama', 'alamat', 'kota', 'provinsi', 'telepon'])?->toArray()
             : null;
 
-        Mail::to($klaim->email)->send(new KlaimJhtMail([
+        SendKlaimJhtConfirmationEmail::dispatch($klaim, [
             'no_klaim'         => $klaim->no_klaim,
             'no_bpjs'          => $klaim->no_bpjs,
             'nik'              => $klaim->nik,
@@ -159,7 +175,7 @@ class KlaimJhtService
             'submitted_at'     => $klaim->submitted_at,
             'layanan'          => $layanan,
             'kantor_cabang'    => $kantorCabang,
-        ]));
+        ]);
     }
 
     private function logActivity(KlaimJht $klaim, Request $request): void

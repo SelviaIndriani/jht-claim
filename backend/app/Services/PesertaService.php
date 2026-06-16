@@ -3,33 +3,47 @@
 namespace App\Services;
 
 use App\Models\Layanan;
-use App\Models\PesertaBpjs;
+use App\Repositories\PesertaRepository;
+use App\Traits\ValidatesInput;
+use App\Utilities\LogActivity;
 
 class PesertaService
 {
-    /**
-     * Verify the no_bpjs + nik + email combination.
-     * Returns ['peserta' => ..., 'layanan' => ...] if valid, or null if not found.
-     */
+    use ValidatesInput;
+
+    public function __construct(
+        protected PesertaRepository $pesertaRepository
+    ) {}
+
     public function verifikasi(string $noBpjs, string $nik, string $email): ?array
     {
-        $member = PesertaBpjs::where('no_bpjs', $noBpjs)
-            ->where('nik', $nik)
-            ->where('is_active', true)
-            ->first();
+        $member = $this->pesertaRepository->findActiveByCombination($noBpjs, $nik);
 
         if (!$member) {
+            LogActivity::warning('peserta_verification_failed_not_found', [
+                'no_bpjs' => $noBpjs,
+                'nik'     => $nik,
+            ]);
             return null;
         }
 
-        // Cross-validate email matches database
-        if (strtolower(trim($email)) !== strtolower(trim($member->email ?? ''))) {
+        if (!$this->stringMatch($email, $member->email ?? '')) {
+            LogActivity::warning('peserta_verification_failed_email_mismatch', [
+                'no_bpjs'       => $noBpjs,
+                'nik'           => $nik,
+                'provided_email' => $email,
+            ]);
             return null;
         }
 
         $layanan = Layanan::whereIn('id', $member->layanan_ids ?? [])
             ->where('is_active', true)
             ->get(['id', 'kode', 'nama', 'deskripsi']);
+
+        LogActivity::info('peserta_verified', [
+            'peserta_id' => $member->id,
+            'no_bpjs'    => $noBpjs,
+        ]);
 
         return [
             'peserta' => [
