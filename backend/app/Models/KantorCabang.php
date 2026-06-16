@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperKantorCabang
+ */
 class KantorCabang extends Model
 {
     protected $table = 'kantor_cabang';

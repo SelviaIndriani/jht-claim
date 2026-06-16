@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\AuditsChanges;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
+/**
+ * @mixin IdeHelperPesertaBpjs
+ */
 class PesertaBpjs extends Model
 {
-    use SoftDeletes, LogsActivity;
+    use SoftDeletes, LogsActivity, AuditsChanges;
 
     protected $table = 'peserta_bpjs';
 
